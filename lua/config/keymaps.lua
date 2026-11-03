@@ -4,16 +4,16 @@
 local map = vim.keymap.set
 local del = vim.keymap.del
 
--- Layout rule: Alt = windows and terminals. Works the same in code windows and inside terminals.
--- Neovim owns every split; no tmux, no terminal-emulator splits.
+-- Layout rule: Alt = windows. Works the same in Normal, Insert and Visual mode.
+-- Neovim is the code editor in one Ghostty pane; shells live in Ghostty splits, not in Neovim.
 -- Ghostty needs `macos-option-as-alt = left` for Option to send Alt.
 
 -- Removed LazyVim defaults (one key per job, nothing that fights macOS or terminal programs):
---   <C-hjkl>      window move        -> Alt-hjkl (also steals Ctrl-h/j/k/l from shells inside terminals)
+--   <C-hjkl>      window move        -> Alt-hjkl
 --   <C-arrows>    window resize      -> Alt-Shift-hjkl (Ctrl-arrows switch macOS Spaces)
 --   <A-j>/<A-k>   move line (i, v)   -> gone, Alt-j/k is window move everywhere
 --   <leader>- / <leader>|            -> <leader>ws / <leader>wv
---   <leader>ft / <leader>fT          -> Ctrl-/ terminal column
+--   <leader>ft / <leader>fT / <C-/>  -> gone, shells live in Ghostty splits
 del("n", "<C-h>")
 del("n", "<C-j>")
 del("n", "<C-k>")
@@ -28,12 +28,18 @@ del("n", "<leader>-")
 del("n", "<leader>|")
 del("n", "<leader>ft")
 del("n", "<leader>fT")
+del({ "n", "t" }, "<C-/>")
+del({ "n", "t" }, "<C-_>")
+
+-- Every layout key is mapped in Normal, Insert and Visual mode. An unmapped Alt key arrives
+-- as Esc + key, so Alt-J in Insert mode would leave Insert and join lines.
+-- Moving focus ends typing or the selection first; resizing keeps the mode.
+local modes = { "n", "i", "x" }
 
 -- Alt-hjkl: move to the window in that direction.
 local nav = { h = "Left", j = "Down", k = "Up", l = "Right" }
 for key, dir in pairs(nav) do
-  map("n", "<M-" .. key .. ">", "<C-w>" .. key, { desc = "Go to " .. dir:lower() .. " window" })
-  map("t", "<M-" .. key .. ">", "<C-\\><C-n><C-w>" .. key, { desc = "Go to " .. dir:lower() .. " window" })
+  map(modes, "<M-" .. key .. ">", "<C-\\><C-n><C-w>" .. key, { desc = "Go to " .. dir:lower() .. " window" })
 end
 
 -- Alt-Shift-hjkl: push the window border in that direction.
@@ -47,23 +53,11 @@ local function resize(dir)
   end
 end
 for key, dir in pairs(nav) do
-  map({ "n", "t" }, "<M-" .. key:upper() .. ">", resize(key), { desc = "Resize window " .. dir:lower() })
+  map(modes, "<M-" .. key:upper() .. ">", resize(key), { desc = "Resize window " .. dir:lower() })
 end
 
--- Terminal column on the right (lua/config/terminal.lua).
-local terminal = require("config.terminal")
-map({ "n", "t" }, "<C-/>", terminal.toggle, { desc = "Terminal column show/hide" })
-map({ "n", "t" }, "<C-_>", terminal.toggle, { desc = "which_key_ignore" }) -- what some terminals send for Ctrl-/
-map({ "n", "t" }, "<M-t>", terminal.new, { desc = "New terminal in column" })
-map("t", "<M-n>", "<C-\\><C-n>", { desc = "Terminal normal mode (scroll, copy)" })
-
--- Alt-m: zoom the current window (same as <leader>wm, but also works while typing in a terminal).
-map({ "n", "t" }, "<M-m>", function()
-  Snacks.zen.zoom()
-  if vim.bo.buftype == "terminal" then
-    vim.cmd.startinsert()
-  end
-end, { desc = "Zoom window" })
+-- Alt-m: zoom the current window (same as <leader>wm).
+map(modes, "<M-m>", "<C-\\><C-n><Cmd>lua Snacks.zen.zoom()<CR>", { desc = "Zoom window" })
 
 -- Ctrl+Q / Ctrl+W / Ctrl+E are reserved by system-wide shortcuts, so their Neovim jobs move:
 --   Ctrl-w {cmd}  window commands       -> <leader>w {cmd}  (LazyVim which-key proxy: ␣wv ␣ws ␣wo ␣w= ...)
@@ -74,3 +68,5 @@ end, { desc = "Zoom window" })
 map({ "i", "c" }, "<M-BS>", "<C-w>", { desc = "Delete word before cursor" })
 map({ "n", "x" }, "<M-e>", "<C-e>", { desc = "Scroll down one line" })
 map({ "n", "x" }, "<M-y>", "<C-y>", { desc = "Scroll up one line" })
+map("i", "<M-e>", "<C-x><C-e>", { desc = "Scroll down one line" }) -- blink.cmp's Alt-e cancels the menu first
+map("i", "<M-y>", "<C-x><C-y>", { desc = "Scroll up one line" })

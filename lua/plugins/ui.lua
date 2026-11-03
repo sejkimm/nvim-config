@@ -22,16 +22,6 @@ return {
       -- Inline images (markdown, image files) via the Kitty graphics protocol.
       -- Ghostty supports it. Non-PNG formats are converted with ImageMagick (`magick`).
       image = { enabled = true },
-      -- Terminal column: editor background, same as a :terminal split. Snacks maps Normal to
-      -- SnacksNormal (-> NormalFloat, the lighter float background) in every window it opens;
-      -- floats like the picker keep that. The rest is snacks' default winhighlight.
-      terminal = {
-        win = {
-          wo = {
-            winhighlight = "WinBar:SnacksWinBar,WinBarNC:SnacksWinBarNC,WinSeparator:SnacksWinSeparator",
-          },
-        },
-      },
     },
   },
 

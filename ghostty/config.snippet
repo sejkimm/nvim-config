@@ -17,18 +17,27 @@ theme = light:noeul-light,dark:noeul-dark
 # Alt keys used by Neovim, matched by physical key (added 2026-11-03).
 # With the Korean input source on, Alt+n arrives as Alt+ㅜ and no Neovim mapping fires.
 # Each line sends exactly what Alt+key sends on the ABC layout; no key changes meaning.
-# Keep in sync with the Alt keys in lua/config/keymaps.lua and lua/plugins/keys.lua.
+# Keep in sync with the Alt keys in lua/config/keymaps.lua and lua/plugins/keys.lua, plus the Alt keys
+# LazyVim and snacks bring: Alt-n/p (next/previous LSP reference), and in the picker Alt-c cwd,
+# Alt-d inspect, Alt-f follow, Alt-i ignored, Alt-p preview, Alt-r regex, Alt-s flash, Alt-w cycle window.
 keybind = alt+key_h=esc:h
 keybind = alt+key_j=esc:j
 keybind = alt+key_k=esc:k
 keybind = alt+key_l=esc:l
-keybind = alt+key_t=esc:t
 keybind = alt+key_n=esc:n
 keybind = alt+key_m=esc:m
 keybind = alt+key_e=esc:e
 keybind = alt+key_y=esc:y
 keybind = alt+key_q=esc:q
 keybind = alt+key_o=esc:o
+keybind = alt+key_p=esc:p
+keybind = alt+key_c=esc:c
+keybind = alt+key_d=esc:d
+keybind = alt+key_f=esc:f
+keybind = alt+key_i=esc:i
+keybind = alt+key_r=esc:r
+keybind = alt+key_s=esc:s
+keybind = alt+key_w=esc:w
 keybind = alt+shift+key_h=esc:H
 keybind = alt+shift+key_j=esc:J
 keybind = alt+shift+key_k=esc:K

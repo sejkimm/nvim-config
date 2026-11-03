@@ -19,13 +19,12 @@ Notation
 |---|---|
 | Normal mode | The default state. Letters are commands, not text |
 | Insert mode | Typing text. Enter with `i`, leave with `Esc` |
-| Terminal mode | Typing into the shell inside a terminal window |
 | `Esc` | When in doubt, press it. Returns to Normal mode |
-| Korean input | Leaving Insert mode, the command line or a terminal switches the input source to English. Switch back with the Han/Eng key |
+| Korean input | Leaving Insert mode or the command line switches the input source to English. Switch back with the Han/Eng key |
 | `␣` and wait | A menu of the keys that can follow (which-key) |
 | `␣sk` | Search keys by name |
 
-Key rule: `␣` opens feature menus, `Alt` handles windows and terminals, plain letters move and edit inside text. Directions are always `h` left, `j` down, `k` up, `l` right.
+Key rule: `␣` opens feature menus, `Alt` handles windows (in every mode, even while typing), `Cmd` handles Ghostty panes, plain letters move and edit inside text. Directions are always `h` left, `j` down, `k` up, `l` right.
 
 ### 1. Open, save, quit
 
@@ -36,7 +35,7 @@ Key rule: `␣` opens feature menus, `Alt` handles windows and terminals, plain 
 | `:q` | Close the current window |
 | `:q!` | Close without saving |
 | `␣qq` | Quit everything |
-| `␣qs` | Restore the last window layout and files for this folder (terminals are not restored) |
+| `␣qs` | Restore the last window layout and files for this folder |
 | `␣ql` | Restore the most recent session (any folder) |
 
 ### 2. Find files, sidebar
@@ -59,25 +58,27 @@ In the sidebar tree: `Enter` opens a file or expands a folder, `a` new file (a t
 |---|---|
 | `␣wv` | Split vertically (new window on the right) |
 | `␣ws` | Split horizontally (new window below) |
-| `Alt-h` `Alt-j` `Alt-k` `Alt-l` | Move to the window left / below / above / right (also inside terminals) |
-| `Alt-H` `Alt-J` `Alt-K` `Alt-L` | Push the window border in that direction (resize) |
-| `␣w=` | Make windows equal size (the tree and the terminal column keep their width) |
-| `␣wm` or `Alt-m` | Zoom the current window and back (`Alt-m` also works inside terminals) |
+| `Alt-h` `Alt-j` `Alt-k` `Alt-l` | Move to the window left / below / above / right (also while typing; typing stops) |
+| `Alt-H` `Alt-J` `Alt-K` `Alt-L` | Push the window border in that direction (resize, the mode stays) |
+| `␣w=` | Make windows equal size (the tree keeps its width) |
+| `␣wm` or `Alt-m` | Zoom the current window and back (`Alt-m` also works while typing) |
 | `␣wd` | Close the current window |
 | `␣wo` | Close all other windows |
 
-### 4. Terminals (right column)
+### 4. Shells (Ghostty panes)
+
+Neovim is the code editor in one Ghostty pane. Shells live in other Ghostty panes, so quitting Neovim leaves them running. These are Ghostty's default keys.
 
 | Key | Action |
 |---|---|
-| `Ctrl-/` | Show / hide the terminal column on the right (hidden shells keep running) |
-| `Alt-t` | Add a terminal at the bottom of the column |
-| `Alt-h` | From a terminal, go back to the code window on the left |
-| `Alt-n` | Scroll and copy mode for terminal output (Normal mode) |
-| `i` | From scroll mode, back to typing |
-| `exit` or `Ctrl-d` | Close that terminal (in the shell) |
-
-Moving into a terminal window starts typing right away. `Esc` goes to the program inside the terminal.
+| `Cmd-d` | New pane on the right |
+| `Cmd-Shift-d` | New pane below |
+| `Cmd-[` `Cmd-]` | Previous / next pane |
+| `Cmd-Option-arrows` | Move to the pane in that direction |
+| `Cmd-Ctrl-arrows` | Resize the pane |
+| `Cmd-Ctrl-=` | Make panes equal size |
+| `Cmd-Shift-Enter` | Zoom the current pane and back |
+| `Cmd-w` | Close the current pane |
 
 ### 5. Open files (buffers)
 
@@ -172,7 +173,7 @@ Combine as `[count] operator target`. Examples: `d3w` deletes 3 words, `ci"` cha
 | `Ctrl-f` `Ctrl-b` | One page down / up |
 | `H` `M` `L` | Top / middle / bottom of the screen |
 | `zt` `zb` | Current line to the top / bottom of the screen |
-| `Alt-e` `Alt-y` | Scroll one line, cursor stays |
+| `Alt-e` `Alt-y` | Scroll one line, cursor stays (also while typing) |
 | `s` + chars | Jump anywhere on screen by label (flash) |
 | `Ctrl-i` | Next position (opposite of `Ctrl-o`) |
 
@@ -251,12 +252,11 @@ Combine as `[count] operator target`. Examples: `d3w` deletes 3 words, `ci"` cha
 | `␣um` | Toggle in-buffer rendering |
 | `␣cp` | Browser preview |
 
-### More terminals and windows
+### More windows
 
 | Key | Action |
 |---|---|
-| `gf` | In scroll mode, open the file under the cursor |
-| `q` | In scroll mode, hide just that terminal |
+| `Alt-n` `Alt-p` | In code with LSP: next / previous reference of the word under the cursor |
 | `␣w` and wait | Full list of window commands |
 | `␣uz` | Zen mode (focused reading) |
 | `␣<Tab><Tab>` | New tab (a whole extra window layout) |
@@ -290,8 +290,7 @@ Keys from general Vim/LazyVim guides that this config changes.
 | `Ctrl-w` + command (windows) | `␣w` + command |
 | `Ctrl-h/j/k/l` (move between windows) | `Alt-h/j/k/l` |
 | `Ctrl-arrows` (resize windows) | `Alt-H/J/K/L` |
-| `Esc Esc` (leave a terminal) | `Alt-n` |
 | `␣-` `␣|` (split windows) | `␣ws` `␣wv` |
-| `␣ft` (terminal) | `Ctrl-/` |
+| `␣ft` `Ctrl-/` (terminal) | Removed. Shells live in Ghostty panes (`Cmd-d`) |
 | `Ctrl-e` `Ctrl-y` (scroll one line) | `Alt-e` `Alt-y` |
 | `Ctrl-w` (delete a word while typing) | `Alt-Backspace` |

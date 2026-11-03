@@ -17,8 +17,7 @@ return {
   {
     "folke/snacks.nvim",
     opts = {
-      -- Terminal windows: let programs inside (shells, pi, lazygit) keep Esc and Ctrl-hjkl.
-      -- Leave with Alt-hjkl, scroll mode with Alt-n, hide the column with Ctrl-/ (lua/config/keymaps.lua).
+      -- Terminal windows (lazygit float): let the program inside keep Esc and Ctrl-hjkl.
       terminal = {
         win = {
           keys = {
@@ -27,8 +26,6 @@ return {
             nav_j = false,
             nav_k = false,
             nav_l = false,
-            hide_slash = false, -- buffer-local Ctrl-/ would shadow the column toggle
-            hide_underscore = false,
           },
         },
       },
