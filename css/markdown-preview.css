@@ -1,0 +1,44 @@
+/*
+ * markdown-preview.nvim adapter for noeul.css
+ *
+ * The preview serves ONE custom stylesheet, so at startup nvim joins
+ * noeul.css (from the noeul plugin) + this file into ~/.cache/nvim/markdown-preview.css
+ * (see lua/plugins/markdown.lua).
+ *
+ * Preview DOM:
+ *   <main data-theme="light|dark">
+ *     <div id="page-ctn">
+ *       <header id="page-header">file name</header>
+ *       <section class="markdown-body">rendered markdown</section>
+ */
+
+/* Theme: follows the OS; the "Dark Mode" toggle in the header sets data-theme */
+main[data-theme="light"] { color-scheme: light; }
+main[data-theme="dark"]  { color-scheme: dark; }
+
+/* noeul.css treats <body> as the document column; here the column is #page-ctn */
+body { max-inline-size: none; padding: 0; }
+main { background: var(--bg1); color: var(--tx1); }
+#page-ctn {
+  box-sizing: content-box;
+  max-width: var(--measure);
+  padding: 3rem 1rem 5rem;
+  color: var(--tx1);
+}
+
+/* File name bar: a quiet label instead of a GitHub-style box */
+#page-header {
+  margin-block-end: 2rem;
+  padding: 0 0 0.5rem;
+  border: 0;
+  border-block-end: 1px solid var(--ui1);
+  border-radius: 0;
+  background: none;
+  color: var(--tx3);
+  font-family: var(--font-mono);
+}
+#page-header h3 { font-size: 0.8125rem; font-weight: 400; }
+.markdown-body > :first-child { margin-block-start: 0; }
+
+/* Lists: "-" as typed in the source instead of discs (matches the in-editor view) */
+.markdown-body ul { list-style-type: "- "; }

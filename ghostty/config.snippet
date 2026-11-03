@@ -1,0 +1,35 @@
+# Settings this Neovim config expects in ~/.config/ghostty/config.
+# Reload in Ghostty: menu Ghostty > Reload Configuration (Cmd+Shift+,)
+
+# Option key sends Alt, so Alt+hjkl (Neovim window movement) works.
+# "left" keeps the right Option key for typing special characters.
+macos-option-as-alt = left
+
+# scrollback-limit is in BYTES. 1000 bytes is only a handful of lines;
+# 10 MB is Ghostty's default.
+scrollback-limit = 10000000
+
+# Theme: Noeul, switches with macOS appearance (added 2026-11-02).
+# Theme files come from github.com/sejkimm/noeul (ghostty/), copied or linked into
+# ~/.config/ghostty/themes/.
+theme = light:noeul-light,dark:noeul-dark
+
+# Alt keys used by Neovim, matched by physical key (added 2026-11-03).
+# With the Korean input source on, Alt+n arrives as Alt+ㅜ and no Neovim mapping fires.
+# Each line sends exactly what Alt+key sends on the ABC layout; no key changes meaning.
+# Keep in sync with the Alt keys in lua/config/keymaps.lua and lua/plugins/keys.lua.
+keybind = alt+key_h=esc:h
+keybind = alt+key_j=esc:j
+keybind = alt+key_k=esc:k
+keybind = alt+key_l=esc:l
+keybind = alt+key_t=esc:t
+keybind = alt+key_n=esc:n
+keybind = alt+key_m=esc:m
+keybind = alt+key_e=esc:e
+keybind = alt+key_y=esc:y
+keybind = alt+key_q=esc:q
+keybind = alt+key_o=esc:o
+keybind = alt+shift+key_h=esc:H
+keybind = alt+shift+key_j=esc:J
+keybind = alt+shift+key_k=esc:K
+keybind = alt+shift+key_l=esc:L
